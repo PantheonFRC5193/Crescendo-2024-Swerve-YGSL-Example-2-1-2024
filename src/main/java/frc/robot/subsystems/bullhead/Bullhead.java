@@ -10,6 +10,9 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 //import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkRelativeEncoder;
+import com.revrobotics.CANSparkBase.ControlType;
+
+
 
 //import com.ctre.phoenix6.Utils;
 // import com.ctre.phoenix6.configs.CANcoderConfiguration;
@@ -70,6 +73,11 @@ public class Bullhead extends SubsystemBase {
     public void setPowerElevator(double power){
         elevator.set(power);
     }
+
+    public void setElevatorPosition(double position) {
+        elevator.getPIDController().setReference(position, ControlType.kPosition);
+    }
+
 
     // intake 
     public void resetIntakeEncoder(){

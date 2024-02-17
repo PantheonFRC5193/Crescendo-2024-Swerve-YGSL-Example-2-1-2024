@@ -11,7 +11,7 @@ import com.ctre.phoenix6.StatusSignal;
 
 public class PivotCANCoder extends ParentDevice {
     
-    final int pivotCANcoderId = 21313;
+    final int pivotCANcoderId = 21313; // need to adjust value
     final String pivotCANcoderCANbus = null;
     CANcoder pivotcancoder;
     
@@ -24,7 +24,6 @@ public class PivotCANCoder extends ParentDevice {
     }
 
     private void configureCANCoder() {
-        // Configure the CANcoder for basic use
         CANcoderConfiguration configs = new CANcoderConfiguration();
         
         // Modify the MagnetSensor parameters
@@ -33,10 +32,8 @@ public class PivotCANCoder extends ParentDevice {
             .withMagnetOffset(0.26)
             .withSensorDirection(SensorDirectionValue.Clockwise_Positive);
         
-        // Apply the MagnetSensor configurations
         configs.withMagnetSensor(magnetSensorConfigs);
         
-        // Write these configs to the CANcoder
         pivotcancoder.getConfigurator().apply(configs);
         
         // Set the position to 0 rotations for initial use

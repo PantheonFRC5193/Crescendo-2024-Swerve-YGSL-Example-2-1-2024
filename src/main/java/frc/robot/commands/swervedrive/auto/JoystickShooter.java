@@ -83,7 +83,6 @@ public class JoystickShooter extends Command {
 
     @Override
     public void execute() {
-        // Implement your joystick control logic here using the Bullhead subsystem and controllers
         
         if (controller1.getAButton()) {
             // Condition 1: If the pivot position is greater than 45, set the power to a negative value
