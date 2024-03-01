@@ -21,7 +21,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+
 import java.io.File;
+import java.util.function.DoubleSupplier;
+import java.util.function.BooleanSupplier;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -32,14 +36,28 @@ public class RobotContainer
 {
 
   // The robot's subsystems and commands are defined here...
-  private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+  public final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve"));
   // CommandJoystick rotationController = new CommandJoystick(1);
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  CommandJoystick driverController = new CommandJoystick(1);
+  //CommandJoystick driverController = new CommandJoystick(1);
+
+    public XboxController driverXbox = new XboxController(0);
+
+    //private final BooleanSupplier leftBumper =  () -> driverXbox.getLeftBumper();
+    //private final BooleanSupplier rightBumper = () -> driverXbox.getRightBumper();
+    //private final DoubleSupplier leftTrigger = () -> driverXbox.getLeftTriggerAxis();
+    //private final DoubleSupplier rightTrigger = () -> driverXbox.getRightTriggerAxis();
+
+
+    //private final JoystickButton aButton = new JoystickButton(driverXbox, 1);
+    //private final JoystickButton xButton = new JoystickButton(driverXbox, 3);
+    //private final JoystickButton bButton = new JoystickButton(driverXbox, 2);
+    //private final JoystickButton yButton = new JoystickButton(driverXbox, 4);
 
   // CommandJoystick driverController   = new CommandJoystick(3);//(OperatorConstants.DRIVER_CONTROLLER_PORT);
-  XboxController driverXbox = new XboxController(0);
+
+
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -48,6 +66,8 @@ public class RobotContainer
   {
     // Configure the trigger bindings
     configureBindings();
+    
+  
 
     AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
                                                                    () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
@@ -87,8 +107,13 @@ public class RobotContainer
         () -> MathUtil.applyDeadband(-driverXbox.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
         () -> driverXbox.getRawAxis(2));
 
+
+
+        
     drivebase.setDefaultCommand(
         !RobotBase.isSimulation() ? driveFieldOrientedDirectAngle : driveFieldOrientedDirectAngleSim);
+
+
   }
 
   /**
@@ -101,8 +126,8 @@ public class RobotContainer
   private void configureBindings()
   {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
     new JoystickButton(driverXbox, 1).onTrue((new InstantCommand(drivebase::zeroGyro)));
+    //new JoystickButton(driverXbox, 5).whileTrue();
     new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
     new JoystickButton(driverXbox,
                        2).whileTrue(
@@ -123,13 +148,20 @@ public class RobotContainer
     return drivebase.getAutonomousCommand("New Path", true);
   }
 
-  public void setDriveMode()
+  public void setDriveMode(Command driveMode)
   {
-    //drivebase.setDefaultCommand();
+    drivebase.setDefaultCommand(driveMode);
   }
 
-  public void setMotorBrake(boolean brake)
+  public void setMotorBrake(Boolean brakeMode)
   {
-    drivebase.setMotorBrake(brake);
+    drivebase.setMotorBrake(brakeMode);
   }
+
+  public Command getDriveCommand(){
+    //return drivebase.get;
+    return null;
+  }
+
 }
+
